@@ -172,10 +172,10 @@ app.get(
 app.get(
     "/auth/google/callback",
     passport.authenticate("google", {
-        failureRedirect: "https://quizwiz.surge.sh"
+        failureRedirect: "https://quiz-wiz-pwa.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://quizwiz.surge.sh/profile/" + req.user.displayName);
+        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/" + req.user.displayName);
     }
 );
 passport.use(
@@ -183,7 +183,7 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "https://damp-spire-28696.herokuapp.com/auth/google/callback"
+            callbackURL: "https://polar-dawn-36653.herokuapp.com/auth/google/callback"
         },
         async function (request, accessToken, refreshToken, profile, done) {
             //     return done(null, profile,
@@ -245,10 +245,10 @@ app.get("/auth/facebook", passport.authenticate("facebook"));
 app.get(
     "/auth/facebook/callback",
     passport.authenticate("facebook", {
-        failureRedirect: "https://quizwiz.surge.sh"
+        failureRedirect: "https://quiz-wiz-pwa.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://quizwiz.surge.sh/profile/" + req.user.displayName);
+        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/" + req.user.displayName);
     }
 );
 passport.use(
@@ -256,7 +256,7 @@ passport.use(
         {
             clientID: process.env.FACEBOOK_CLIENT_ID,
             clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-            callbackURL: "https://damp-spire-28696.herokuapp.com/auth/facebook/callback"
+            callbackURL: "https://polar-dawn-36653.herokuapp.com/auth/facebook/callback"
         },
         async function (accessToken, refreshToken, profile, done) {
             //     return done(null, profile,
@@ -331,10 +331,10 @@ app.get("/auth/github", passport.authenticate("github"));
 app.get(
     "/auth/github/callback",
     passport.authenticate("github", {
-        failureRedirect: "https://quizwiz.surge.sh"
+        failureRedirect: "https://quiz-wiz-pwa.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://quizwiz.surge.sh/profile/" + req.user.username);
+        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/" + req.user.username);
     }
 );
 
@@ -343,7 +343,7 @@ passport.use(
         {
             clientID: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: "https://damp-spire-28696.herokuapp.com/auth/github/callback"
+            callbackURL: "https://polar-dawn-36653.herokuapp.com/auth/github/callback"
         },
         async function (accessToken, refreshToken, profile, done) {
             //     return done(null, profile,
@@ -446,6 +446,7 @@ app.get("/api/highscore", (req, res) => {
 
 app.get("/api/userscore", async (req, res) => {
     let username = req.query["username"];
+    console.log("username", username)
     let userScore = null;
     let score = await models.Users.findOne({
         where: {
