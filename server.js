@@ -523,6 +523,6 @@ app.post("/api/submit", async (req, res) => {
 //**************************Server Hosting**************************//
 
 //app.listen( process.env.PORT);
-app.listen(8080, () => {
-    console.log("Server is running...");
-});
+// app.listen(8080, () => {
+//     console.log("Server is running...");
+// });
