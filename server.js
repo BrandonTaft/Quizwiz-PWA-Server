@@ -14,11 +14,11 @@ const User = require("./models");
 const session = require("express-session");
 var connect = require("connect");
 const sequelize = require("sequelize");
-const {where, Op} = require("sequelize");
+const { where, Op } = require("sequelize");
 var flash = require("flash");
 var passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy,
-ExtractJwt = require("passport-jwt").ExtractJwt;
+    ExtractJwt = require("passport-jwt").ExtractJwt;
 const { v4: uuidv4 } = require("uuid"); // uuid, To call: uuidv4();
 require("dotenv").config();
 const opts = {};
@@ -59,9 +59,9 @@ app.post("/api/register", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const persistedUser = await models.Users.findOne({
-        where:{
-            name : sequelize.where(sequelize.fn('LOWER', sequelize.col('name')),{
-                [Op.like]:username.toLowerCase()
+        where: {
+            name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
+                [Op.like]: username.toLowerCase()
             })
         }
     })
@@ -92,9 +92,9 @@ app.post("/api/login", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const user = await models.Users.findOne({
-        where:{
-            name : sequelize.where(sequelize.fn('LOWER', sequelize.col('name')),{
-                [Op.like]:username.toLowerCase()
+        where: {
+            name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
+                [Op.like]: username.toLowerCase()
             })
         }
     });
@@ -334,7 +334,8 @@ app.get(
         failureRedirect: "https://quiz-wiz-pwa.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/" + req.user.username);
+        // res.redirect("https://quiz-wiz-pwa.vercel.app/profile/" + req.user.username);
+        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/?name=" + req.user.username);
     }
 );
 
@@ -346,25 +347,17 @@ passport.use(
             callbackURL: "https://polar-dawn-36653.herokuapp.com/auth/github/callback"
         },
         async function (accessToken, refreshToken, profile, done) {
-            //     return done(null, profile,
-            //       console.log(JSON.stringify(profile), 'AccessToken:', accessToken, 'Refresh Token:', refreshToken))
-            //   }
-            // ));
-
             const name = profile.username;
             const password = profile.id;
             const token = profile.accessToken;
-
             const persistedUser = await models.Users.findOne({
                 where: {
                     name: name
                 }
             });
-
             if (persistedUser == null) {
                 console.log("user");
                 bcrypt.hash(password, salt, async (error, hash) => {
-                    console.log(hash);
                     if (error) {
                         //res.json({ message: "Something Went Wrong!!!" })
                     } else {
@@ -374,7 +367,6 @@ passport.use(
                             spare_one: token,
                             high_score: "0"
                         });
-
                         let savedUser = await user.save();
                         if (savedUser != null) {
                             console.log("{ success: true }");
@@ -507,22 +499,22 @@ app.post("/api/submit", async (req, res) => {
             name: req.body.username
         }
     });
-    console.log("user high score", user["high_score"] )
-    console.log("req.body.score", req.body.score )
+    console.log("user high score", user["high_score"])
+    console.log("req.body.score", req.body.score)
     if (user["high_score"] < req.body.score) {
         models.Users.update(
             { high_score: req.body.score },
             { where: { name: req.body.username } }
         ).then(result => {
-            res.send({ newHighScore : true });
+            res.send({ newHighScore: true });
         });
     } else {
-        res.send({ newHighScore : false });
+        res.send({ newHighScore: false });
     }
 });
 
 //**************************Server Hosting**************************//
 
 app.listen(process.env.PORT, () => {
-        console.log("Server is running...");
-    });
+    console.log("Server is running...");
+});
