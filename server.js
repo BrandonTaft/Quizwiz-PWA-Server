@@ -445,8 +445,8 @@ app.get("/api/userscore", async (req, res) => {
             name: username
         }
     }).then(user_Score => {
-        console.log(user_Score["dataValues"]["high_score"]);
-        userScore = user_Score["dataValues"]["high_score"];
+        console.log(user_Score.high_score);
+        userScore = user_Score.high_score;
     });
     res.json({ score: userScore });
 });
