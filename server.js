@@ -156,7 +156,7 @@ passport.use(
             if (persistedUser == null) {
                 bcrypt.hash(password, salt, async (error, hash) => {
                     if (error) {
-                        res.json({ message: "Something Went Wrong!!!" });
+                        console.log("Something Went Wrong!")
                     } else {
                         const user = models.Users.build({
                             name: name,
@@ -166,7 +166,6 @@ passport.use(
                         });
                         let savedUser = await user.save();
                         if (savedUser != null) {
-                            res.json({ success: true });
                             return done(
                                 null,
                                 profile,
@@ -216,7 +215,7 @@ passport.use(
             if (persistedUser == null) {
                 bcrypt.hash(password, salt, async (error, hash) => {
                     if (error) {
-                        res.json({ message: "Something Went Wrong!!!" });
+                        console.log("Something Went Wrong!!!");
                     } else {
                         const user = models.Users.build({
                             name: name,
@@ -226,7 +225,6 @@ passport.use(
                         });
                         let savedUser = await user.save();
                         if (savedUser != null) {
-                            res.json({ success: true });
                             return done(
                                 null,
                                 profile,
@@ -242,7 +240,6 @@ passport.use(
                     }
                 });
             } else {
-               res.json({message: "Sorry This UserName Already Exists."})
                 return done(
                     null,
                     profile,
@@ -291,7 +288,7 @@ passport.use(
             if (persistedUser == null) {
                 bcrypt.hash(password, salt, async (error, hash) => {
                     if (error) {
-                        res.json({ message: "Something Went Wrong!!!" })
+                        console.log("Something Went Wrong!")
                     } else {
                         const user = models.Users.build({
                             name: name,
