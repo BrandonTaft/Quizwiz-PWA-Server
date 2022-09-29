@@ -185,55 +185,110 @@ passport.use(
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: "https://polar-dawn-36653.herokuapp.com/auth/google/callback"
         },
-        async function (request, accessToken, refreshToken, profile, done) {
-            //     return done(null, profile,
-            //       console.log(JSON.stringify(profile), 'AccessToken:', accessToken, 'Refresh Token:', refreshToken))
-            //   }
-            // ));
+        // async function (request, accessToken, refreshToken, profile, done) {
+        //     //     return done(null, profile,
+        //     //       console.log(JSON.stringify(profile), 'AccessToken:', accessToken, 'Refresh Token:', refreshToken))
+        //     //   }
+        //     // ));
 
-            const name = profile.displayName;
+        //     const name = profile.displayName;
+        //     const password = profile.id;
+        //     const token = profile.accessToken;
+
+        //     const persistedUser = await models.Users.findOne({
+        //         where: {
+        //             name: name
+        //         }
+        //     });
+
+        //     if (persistedUser == null) {
+        //         console.log("user");
+        //         bcrypt.hash(password, salt, async (error, hash) => {
+        //             console.log(hash);
+        //             if (error) {
+        //                 res.json({ message: "Something Went Wrong!!!" });
+        //             } else {
+        //                 const user = models.Users.build({
+        //                     name: name,
+        //                     password: hash,
+        //                     high_score: "0"
+        //                 });
+
+        //                 let savedUser = await user.save();
+        //                 if (savedUser != null) {
+        //                     console.log("{ success: true }");
+
+        //                     //res.json(profile);
+        //                     return done(
+        //                         null,
+        //                         profile,
+        //                         console.log("new user was added by passport")
+        //                     );
+        //                 }
+        //             }
+        //         });
+        //     } else {
+        //         console.log('res.json({ message: "Existing User" })');
+        //         return done(
+        //             null,
+        //             profile,
+
+        //             console.log("existing user was authenticated")
+        //         );
+        //     }
+        // }
+        async function (accessToken, refreshToken, profile, done) {
+            const name = profile.username;
             const password = profile.id;
             const token = profile.accessToken;
-
             const persistedUser = await models.Users.findOne({
                 where: {
                     name: name
                 }
             });
-
             if (persistedUser == null) {
                 console.log("user");
                 bcrypt.hash(password, salt, async (error, hash) => {
-                    console.log(hash);
                     if (error) {
-                        res.json({ message: "Something Went Wrong!!!" });
+                        //res.json({ message: "Something Went Wrong!!!" })
                     } else {
                         const user = models.Users.build({
                             name: name,
                             password: hash,
+                            spare_one: token,
                             high_score: "0"
                         });
-
                         let savedUser = await user.save();
                         if (savedUser != null) {
                             console.log("{ success: true }");
-
-                            //res.json(profile);
                             return done(
                                 null,
                                 profile,
-                                console.log("new user was added by passport")
+                                console.log(
+                                    JSON.stringify(profile),
+                                    "AccessToken:",
+                                    accessToken,
+                                    "Refresh Token:",
+                                    refreshToken
+                                )
                             );
                         }
                     }
                 });
             } else {
-                console.log('res.json({ message: "Existing User" })');
+                console.log(
+                    'res.json({ message: " Sorry This UserName Already Exists." })'
+                );
                 return done(
                     null,
                     profile,
-
-                    console.log("existing user was authenticated")
+                    console.log(
+                        JSON.stringify(profile),
+                        "AccessToken:",
+                        accessToken,
+                        "Refresh Token:",
+                        refreshToken
+                    )
                 );
             }
         }
