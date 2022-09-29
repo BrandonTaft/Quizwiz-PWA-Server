@@ -193,7 +193,7 @@ app.get(
         failureRedirect: "https://quiz-wiz-pwa.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/" + req.user.displayName);
+        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/?name=" + req.user.displayName);
     }
 );
 passport.use(
@@ -228,13 +228,7 @@ passport.use(
                             return done(
                                 null,
                                 profile,
-                                console.log(
-                                    JSON.stringify(profile),
-                                    "AccessToken:",
-                                    accessToken,
-                                    "Refresh Token:",
-                                    refreshToken
-                                )
+                                console.log("User Was Added By Passport")
                             );
                         }
                     }
@@ -243,13 +237,7 @@ passport.use(
                 return done(
                     null,
                     profile,
-                    console.log(
-                        JSON.stringify(profile),
-                        "AccessToken:",
-                        accessToken,
-                        "Refresh Token:",
-                        refreshToken
-                    )
+                    console.log("existing user was authenticated")
                 );
             }
         }
@@ -301,13 +289,7 @@ passport.use(
                             return done(
                                 null,
                                 profile,
-                                console.log(
-                                    JSON.stringify(profile),
-                                    "AccessToken:",
-                                    accessToken,
-                                    "Refresh Token:",
-                                    refreshToken
-                                )
+                                console.log("User Was Added By Passport")
                             );
                         }
                     }
@@ -316,13 +298,7 @@ passport.use(
                 return done(
                     null,
                     profile,
-                    console.log(
-                        JSON.stringify(profile),
-                        "AccessToken:",
-                        accessToken,
-                        "Refresh Token:",
-                        refreshToken
-                    )
+                    console.log("existing user was authenticated")
                 );
             }
         }
