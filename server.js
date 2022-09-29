@@ -175,7 +175,7 @@ app.get(
         failureRedirect: "https://quiz-wiz-pwa.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/?name=" + req.user.username);
+        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/?name=" + req.user.displayName);
     }
 );
 passport.use(
