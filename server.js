@@ -9,7 +9,6 @@ const cookieParser = require("cookie-parser");
 const FacebookStrategy = require("passport-facebook").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GithubStrategy = require("passport-github2").Strategy;
-const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models");
 const session = require("express-session");
 var connect = require("connect");
@@ -17,12 +16,9 @@ const sequelize = require("sequelize");
 const { where, Op } = require("sequelize");
 var flash = require("flash");
 var passport = require("passport");
-const JwtStrategy = require("passport-jwt").Strategy,
-    ExtractJwt = require("passport-jwt").ExtractJwt;
 const { v4: uuidv4 } = require("uuid"); // uuid, To call: uuidv4();
 require("dotenv").config();
 const opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.JWT_SECRET_KEY;
 const salt = 10;
 require("dotenv").config();
@@ -33,9 +29,7 @@ app.use(
         allowedHeaders: "Content-Type, Authorization"
     })
 );
-//app.use(cors());
 app.use(express.json());
-
 app.use(
     session({
         genid: function (req) {
@@ -118,39 +112,6 @@ app.post("/api/login", async (req, res) => {
     }
 });
 
-
-// app.post("/api/login", passport.authenticate("local",function(req, res) {
-//   // If this function gets called, authentication was successful.
-//   // To Access specific user info use- req.user.high_score
-//   console.log("User was Authenticated")
-//   //successRedirect: "https://quizwiz.me"
-
-// }));
-
-// passport.use(
-//   new LocalStrategy(async function(username, password, done) {
-
-//     const user = await models.Users.findOne({
-//         where: {
-//             name: username
-//         }
-//     })
-//     if (user != null) {
-//     bcrypt.compare(password,user.password, (error, result) => {
-//       if (result) {
-//         const token = jwt.sign({ name: username }, process.env.JWT_SECRET_KEY);
-//         return done(null,
-//           username
-//         )
-//       } else {
-//         return done(console.log( "Not Authenticated" ))
-//       }
-//     })
-//   } else {
-//     return done({ message: "Username Incorrect" })
-//   }
-//     }))
-
 //*******************Serialize User***********************//
 
 passport.serializeUser(function (user, done) {
@@ -158,9 +119,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    //models.Users.findById(id, function(err, user) {
     done(null, id);
-    // });
 });
 
 //*******************  Google Strategy  ***********************//
@@ -195,7 +154,6 @@ passport.use(
                 }
             });
             if (persistedUser == null) {
-                console.log("user");
                 bcrypt.hash(password, salt, async (error, hash) => {
                     if (error) {
                         res.json({ message: "Something Went Wrong!!!" });
@@ -206,12 +164,9 @@ passport.use(
                             spare_one: token,
                             high_score: "0"
                         });
-
                         let savedUser = await user.save();
                         if (savedUser != null) {
-                            console.log("{ success: true }");
-
-                            //res.json(profile);
+                            res.json({ success: true });
                             return done(
                                 null,
                                 profile,
@@ -221,11 +176,9 @@ passport.use(
                     }
                 });
             } else {
-                console.log('res.json({ message: "Existing User" })');
                 return done(
                     null,
                     profile,
-
                     console.log("existing user was authenticated")
                 );
             }
@@ -252,25 +205,16 @@ passport.use(
             callbackURL: "https://polar-dawn-36653.herokuapp.com/auth/facebook/callback"
         },
         async function (accessToken, refreshToken, profile, done) {
-            //     return done(null, profile,
-            //       console.log(JSON.stringify(profile), 'AccessToken:', accessToken, 'Refresh Token:', refreshToken))
-            //   }
-            // ));
-
             const name = profile.displayName;
             const password = profile.id;
             const token = profile.accessToken;
-
             const persistedUser = await models.Users.findOne({
                 where: {
                     name: name
                 }
             });
-
             if (persistedUser == null) {
-                console.log("user");
                 bcrypt.hash(password, salt, async (error, hash) => {
-                    console.log(hash);
                     if (error) {
                         res.json({ message: "Something Went Wrong!!!" });
                     } else {
@@ -280,10 +224,9 @@ passport.use(
                             spare_one: token,
                             high_score: "0"
                         });
-
                         let savedUser = await user.save();
                         if (savedUser != null) {
-                            console.log("{ success: true }");
+                            res.json({ success: true });
                             return done(
                                 null,
                                 profile,
@@ -299,9 +242,7 @@ passport.use(
                     }
                 });
             } else {
-                console.log(
-                    'res.json({ message: " Sorry This UserName Already Exists." })'
-                );
+               res.json({message: "Sorry This UserName Already Exists."})
                 return done(
                     null,
                     profile,
@@ -327,7 +268,6 @@ app.get(
         failureRedirect: "https://quiz-wiz-pwa.vercel.app"
     }),
     function (req, res) {
-        // res.redirect("https://quiz-wiz-pwa.vercel.app/profile/" + req.user.username);
         res.redirect("https://quiz-wiz-pwa.vercel.app/profile/?name=" + req.user.username);
     }
 );
@@ -349,7 +289,6 @@ passport.use(
                 }
             });
             if (persistedUser == null) {
-                console.log("user");
                 bcrypt.hash(password, salt, async (error, hash) => {
                     if (error) {
                         res.json({ message: "Something Went Wrong!!!" })
@@ -362,7 +301,6 @@ passport.use(
                         });
                         let savedUser = await user.save();
                         if (savedUser != null) {
-                            console.log("{ success: true }");
                             return done(
                                 null,
                                 profile,
@@ -378,9 +316,6 @@ passport.use(
                     }
                 });
             } else {
-                console.log(
-                    'res.json({ message: " Sorry This UserName Already Exists." })'
-                );
                 return done(
                     null,
                     profile,
@@ -413,7 +348,6 @@ app.get("/api/highscore", (req, res) => {
         limit: 99,
         group: ["high_score", "Users.id"],
         order: [[sequelize.fn("max", sequelize.col("high_score")), "DESC"]]
-        //  [['score', 'Desc']]
     }).then(high_Score => {
         let len = high_Score.length
         console.log(high_Score.length)
