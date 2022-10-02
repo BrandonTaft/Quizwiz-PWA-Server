@@ -362,7 +362,7 @@ app.get("/quiz/:category", (req, res) => {
             )
             .then(response => response.data)
             .then(result => {
-                res.text(result.results);
+                res.json(result.results);
             });
     } else {
         axios
@@ -371,7 +371,7 @@ app.get("/quiz/:category", (req, res) => {
             )
             .then(response => response.data)
             .then(result => {
-                res.text(result.results);
+                res.json(result.results);
             });
     }
 });
