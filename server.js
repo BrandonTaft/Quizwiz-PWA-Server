@@ -23,11 +23,7 @@ opts.secretOrKey = process.env.JWT_SECRET_KEY;
 const salt = 10;
 require("dotenv").config();
 app.use(
-    cors({
-        origin: "*",
-        methods: "GET, POST, PATCH, DELETE, PUT",
-        allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json'
-    })
+    cors()
 );
 app.use(express.json());
 app.use(
