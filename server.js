@@ -26,7 +26,7 @@ app.use(
     cors({
         origin: "*",
         methods: "GET, POST, PATCH, DELETE, PUT",
-        allowedHeaders: "Content-Type, Authorization"
+        allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json'
     })
 );
 app.use(express.json());
@@ -352,28 +352,64 @@ app.get("/api/userscore", async (req, res) => {
 });
 
 //***************************Get questions***************************//
-
+const questions = [
+    {
+      category: 'General Knowledge',
+      type: 'multiple',
+      difficulty: 'easy',
+      question: 'What is ?',
+      correct_answer: 'Genesis',
+      incorrect_answers: [ 'Exodus', 'Leviticus', 'Numbers' ]
+    },
+    {
+      category: 'General Knowledge',
+      type: 'multiple',
+      difficulty: 'easy',
+      question: 'In the ?',
+      correct_answer: 'Key',
+      incorrect_answers: [ 'Sword', 'Pen', 'Cellphone' ]
+    },
+    {
+      category: 'General Knowledge',
+      type: 'multiple',
+      difficulty: 'easy',
+      question: 'In ?',
+      correct_answer: 'Watch',
+      incorrect_answers: [ 'Money', 'Keys', 'Notebook' ]
+    },
+    {
+      category: 'General Knowledge',
+      type: 'multiple',
+      difficulty: 'easy',
+      question: 'What is ?',
+      correct_answer: 'Skin',
+      incorrect_answers: [ 'Heart', 'large Intestine', 'Liver' ]
+    }]
 app.get("/quiz/:category", (req, res) => {
-    let category = req.params["category"];
-    if (category == 100) {
-        axios
-            .get(
-                `https://opentdb.com/api.php?amount=13&difficulty=easy&type=multiple`
-            )
-            .then(response => response.data)
-            .then(result => {
-                res.json(result.results);
-            });
-    } else {
-        axios
-            .get(
-                `https://opentdb.com/api.php?amount=13&category=${category}&difficulty=easy&type=multiple`
-            )
-            .then(response => response.data)
-            .then(result => {
-                res.json(result.results);
-            });
-    }
+    res.json(questions)
+    // console.log("TESSSST")
+    // let category = req.params["category"];
+    // if (category == 100) {
+    //     axios
+    //         .get(
+    //             `https://opentdb.com/api.php?amount=13&difficulty=easy&type=multiple`
+    //         )
+    //         .then(response => response.data)
+    //         .then(result => {
+    //             console.log(result.results)
+    //             res.json(result.results);
+    //         });
+    // } else {
+    //     axios
+    //         .get(
+    //             `https://opentdb.com/api.php?amount=13&category=${category}&difficulty=easy&type=multiple`
+    //         )
+    //         .then(response => response.data)
+    //         .then(result => {
+    //             console.log(result.results)
+    //             res.json(result.results);
+    //         });
+    // }
 });
 //**************************Delete user**************************//
 
@@ -415,5 +451,5 @@ app.post("/api/submit", async (req, res) => {
 //**************************Server Hosting**************************//
 
 app.listen(process.env.PORT, () => {
-    console.log("Server is running...");
+    console.log(`Server is running on ${process.env.PORT}`);
 });
