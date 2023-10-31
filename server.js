@@ -22,6 +22,7 @@ const opts = {};
 opts.secretOrKey = process.env.JWT_SECRET_KEY;
 const salt = 10;
 require("dotenv").config();
+// app.use(express.static(path.resolve(__dirname, './QuizWiz-PWA/.next/server/pages')));
 app.use(
     cors()
 );
@@ -348,41 +349,60 @@ app.get("/api/userscore", async (req, res) => {
 });
 
 //***************************Get questions***************************//
-const questions = [
+const erinQuestions = [
     {
       category: 'General Knowledge',
       type: 'multiple',
       difficulty: 'easy',
-      question: 'What is ?',
-      correct_answer: 'Genesis',
-      incorrect_answers: [ 'Exodus', 'Leviticus', 'Numbers' ]
+      question: 'Which of the following is not a valid type of time off request?',
+      correct_answer: 'Personal Time Off',
+      incorrect_answers: [ 'Alternate Holiday', 'Paid Time Off', 'Volunteer' ]
     },
     {
       category: 'General Knowledge',
       type: 'multiple',
       difficulty: 'easy',
-      question: 'In the ?',
-      correct_answer: 'Key',
-      incorrect_answers: [ 'Sword', 'Pen', 'Cellphone' ]
+      question: 'What is the name of the new benefit tool?',
+      correct_answer: 'Alex',
+      incorrect_answers: [ 'Eric', 'MyHR', 'Benefit Tracker' ]
     },
     {
       category: 'General Knowledge',
       type: 'multiple',
       difficulty: 'easy',
-      question: 'In ?',
-      correct_answer: 'Watch',
-      incorrect_answers: [ 'Money', 'Keys', 'Notebook' ]
+      question: 'What does the ERIN acronym stand for?',
+      correct_answer: 'Employee Resource Information Network',
+      incorrect_answers: [ 'Easy & Reliable Information Network', 'Employee Really Is New', 'Earning Recognition Is Neat' ]
     },
     {
       category: 'General Knowledge',
       type: 'multiple',
       difficulty: 'easy',
-      question: 'What is ?',
-      correct_answer: 'Skin',
-      incorrect_answers: [ 'Heart', 'large Intestine', 'Liver' ]
-    }]
+      question: 'What is the Assurant cares portal?',
+      correct_answer: 'A one stop shop for all communtiy engagement activities',
+      incorrect_answers: [ 'Social Media Site', 'Nothing, I made it up', 'Employee Health and Wellness Program' ]
+    },
+    {
+        category: 'General Knowledge',
+        type: 'multiple',
+        difficulty: 'easy',
+        question: 'What information can I NOT change in MyHR?',
+        correct_answer: 'Pay Rate',
+        incorrect_answers: [ 'Contact Information', 'Benefits', 'Dependents' ]
+      },
+      {
+        category: 'General Knowledge',
+        type: 'multiple',
+        difficulty: 'easy',
+        question: 'Alternate holidays CANNOT be rolled over to the next year?',
+        correct_answer: 'True',
+        incorrect_answers: [ 'False' ]
+      }
+]
 app.get("/quiz/:category", (req, res) => {
-    res.json(questions)
+    let category = req.params["category"];
+    if (category === 'ERIN') { res.json(erinQuestions) }
+    
     // console.log("TESSSST")
     // let category = req.params["category"];
     // if (category == 100) {
