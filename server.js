@@ -4,7 +4,6 @@ const cors = require("cors");
 const app = express();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const axios = require("axios");
 const cookieParser = require("cookie-parser");
 const FacebookStrategy = require("passport-facebook").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -22,7 +21,6 @@ const opts = {};
 opts.secretOrKey = process.env.JWT_SECRET_KEY;
 const salt = 10;
 require("dotenv").config();
-// app.use(express.static(path.resolve(__dirname, './QuizWiz-PWA/.next/server/pages')));
 app.use(
     cors()
 );
@@ -396,14 +394,13 @@ const erinQuestions = [
         difficulty: 'easy',
         question: 'Alternate holidays CANNOT be rolled over to the next year?',
         correct_answer: 'True',
-        incorrect_answers: [ 'False' ]
+        incorrect_answers: [ 'False',  ]
       }
 ]
 app.get("/quiz/:category", (req, res) => {
     let category = req.params["category"];
     if (category === 'ERIN') { res.json(erinQuestions) }
     
-    // console.log("TESSSST")
     // let category = req.params["category"];
     // if (category == 100) {
     //     axios
