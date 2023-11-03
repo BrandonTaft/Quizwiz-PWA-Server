@@ -54,9 +54,8 @@ app.post("/api/register", async (req, res) => {
             })
         }
     })
-    if (persistedUser == null) {
+    if (persistedUser === null) {
         bcrypt.hash(password, salt, async (error, hash) => {
-            console.log(hash)
             if (error) {
                 res.json({ message: "Something Went Wrong!!!" })
             } else {
@@ -66,7 +65,7 @@ app.post("/api/register", async (req, res) => {
                     high_score: "0"
                 })
                 let savedUser = await user.save()
-                if (savedUser != null) {
+                if (savedUser !== null) {
                     res.json({ success: true })
                 }
             }
@@ -87,7 +86,7 @@ app.post("/api/login", async (req, res) => {
             })
         }
     });
-    if (user != null) {
+    if (user !== null) {
         bcrypt.compare(password, user.password, (error, result) => {
             if (result) {
                 const token = jwt.sign({ name: username }, process.env.JWT_SECRET_KEY);
@@ -333,7 +332,6 @@ app.get("/api/highscore", (req, res) => {
 
 app.get("/api/userscore", async (req, res) => {
     let username = req.query["username"];
-    let userScore = null;
     let score = await models.Users.findOne({
         where: {
             name: username
@@ -344,7 +342,6 @@ app.get("/api/userscore", async (req, res) => {
     } else {
         res.json({ score: 0 });
     }
-    
 });
 
 //***************************Get questions***************************//
