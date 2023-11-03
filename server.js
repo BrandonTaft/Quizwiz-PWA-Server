@@ -340,8 +340,11 @@ app.get("/api/userscore", async (req, res) => {
             name: username
         }
     }).then(user_Score => {
-        console.log(user_Score.high_score);
+        if (score !== null) {
         userScore = user_Score.high_score;
+        } else {
+            userScore = 0
+        }
     });
     res.json({ score: userScore });
 });
