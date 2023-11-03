@@ -333,20 +333,18 @@ app.get("/api/highscore", (req, res) => {
 
 app.get("/api/userscore", async (req, res) => {
     let username = req.query["username"];
-    console.log("username", username)
     let userScore = null;
     let score = await models.Users.findOne({
         where: {
             name: username
         }
-    }).then(user_Score => {
-        if (score !== null) {
-        userScore = user_Score.high_score;
-        } else {
-            userScore = 0
-        }
     });
-    res.json({ score: userScore });
+    if(score !== null) {
+        res.json({ score: score.high_score });
+    } else {
+        res.json({ score: 0 });
+    }
+    
 });
 
 //***************************Get questions***************************//
