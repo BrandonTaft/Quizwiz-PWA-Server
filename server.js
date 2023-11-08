@@ -392,7 +392,7 @@ const erinQuestions = [
         difficulty: 'easy',
         question: 'Alternate holidays CANNOT be rolled over to the next year?',
         correct_answer: 'True',
-        incorrect_answers: [ 'False',  ]
+        incorrect_answers: [ 'False', 'Sometimes', 'Maybe' ]
       }
 ]
 app.get("/quiz/:category", (req, res) => {
