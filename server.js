@@ -442,7 +442,7 @@ app.post("/api/deleteuser", async (req, res) => {
          }
       }, function(err){
           console.log(err); 
-      });
+      })
 });
 
 //**************************Submit Score**************************//
