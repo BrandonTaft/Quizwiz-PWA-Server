@@ -430,7 +430,8 @@ app.post("/api/deleteuser", async (req, res) => {
         where: {
             name: req.body.userName
         }
-    // }).then(removedUser => {
+     })
+    //.then(removedUser => {
     //     if(removedUser !== null) {
     //     res.json({success: true});
     //     }
