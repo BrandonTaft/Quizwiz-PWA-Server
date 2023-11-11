@@ -432,7 +432,7 @@ app.post("/api/deleteuser", async (req, res) => {
             name: req.body.userName
         }
     }).then(removedUser => {
-        console.log(`removed ${req.body[0].userName}`);
+        console.log(`removed ${req.body.userName}`);
         if(removedUser !== null) {
         res.json({success: true});
         }
