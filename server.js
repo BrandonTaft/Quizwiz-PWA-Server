@@ -125,10 +125,10 @@ app.get(
 app.get(
     "/auth/google/callback",
     passport.authenticate("google", {
-        failureRedirect: "https://quiz-wiz-pwa.vercel.app"
+        failureRedirect: "https://areyousmarter.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/?name=" + req.user.displayName);
+        res.redirect("https://areyousmarter.vercel.app/profile/?name=" + req.user.displayName);
     }
 );
 passport.use(
@@ -184,10 +184,10 @@ app.get("/auth/facebook", passport.authenticate("facebook"));
 app.get(
     "/auth/facebook/callback",
     passport.authenticate("facebook", {
-        failureRedirect: "https://quiz-wiz-pwa.vercel.app"
+        failureRedirect: "https://areyousmarter.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/?name=" + req.user.displayName);
+        res.redirect("https://areyousmarter.vercel.app/profile/?name=" + req.user.displayName);
     }
 );
 passport.use(
@@ -244,10 +244,10 @@ app.get("/auth/github", passport.authenticate("github"));
 app.get(
     "/auth/github/callback",
     passport.authenticate("github", {
-        failureRedirect: "https://quiz-wiz-pwa.vercel.app"
+        failureRedirect: "https://areyousmarter.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://quiz-wiz-pwa.vercel.app/profile/?name=" + req.user.username);
+        res.redirect("https://areyousmarter.vercel.app/profile/?name=" + req.user.username);
     }
 );
 
