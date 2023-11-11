@@ -426,17 +426,23 @@ app.get("/quiz/:category", (req, res) => {
 
 //localstorage.clear on users end as well
 app.post("/api/deleteuser", async (req, res) => {
-    console.log(req.body.userName);
     let removedUser = await models.Users.destroy({
         where: {
             name: req.body.userName
         }
-    }).then(removedUser => {
-        console.log(`removed ${req.body.userName}`);
-        if(removedUser !== null) {
-        res.json({success: true});
-        }
-    });
+    // }).then(removedUser => {
+    //     if(removedUser !== null) {
+    //     res.json({success: true});
+    //     }
+    // });
+    .then(function(rowDeleted){ // rowDeleted will return number of rows deleted
+        if(rowDeleted === 1){
+           console.log('Deleted successfully');
+           res.json({success: true})
+         }
+      }, function(err){
+          console.log(err); 
+      });
 });
 
 //**************************Submit Score**************************//
