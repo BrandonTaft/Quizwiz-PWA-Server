@@ -426,10 +426,10 @@ app.get("/quiz/:category", (req, res) => {
 
 //localstorage.clear on users end as well
 app.post("/api/deleteuser", async (req, res) => {
-    console.log(req.body[0].userName);
+    console.log(req.body.userName);
     let removedUser = await models.Users.destroy({
         where: {
-            name: req.body[0].userName
+            name: req.body.userName
         }
     }).then(removedUser => {
         console.log(`removed ${req.body[0].userName}`);
