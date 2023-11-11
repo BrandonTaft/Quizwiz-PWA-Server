@@ -430,20 +430,12 @@ app.post("/api/deleteuser", async (req, res) => {
         where: {
             name: req.body.userName
         }
-     })
-    //.then(removedUser => {
-    //     if(removedUser !== null) {
-    //     res.json({success: true});
-    //     }
-    // });
-    .then(function(rowDeleted){ // rowDeleted will return number of rows deleted
-        if(rowDeleted === 1){
-           console.log('Deleted successfully');
-           res.json({success: true})
-         }
-      }, function(err){
-          console.log(err); 
-      })
+    }).then(removedUser => {
+        console.log(removedUser)
+        if(removedUser !== null) {
+        res.json({success: true});
+        }
+    });
 });
 
 //**************************Submit Score**************************//
