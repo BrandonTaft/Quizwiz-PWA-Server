@@ -431,9 +431,10 @@ app.post("/api/deleteuser", async (req, res) => {
             name: req.body.userName
         }
     }).then(removedUser => {
-        console.log(removedUser)
-        if(removedUser !== null) {
+        if(removedUser === 1) {
         res.json({success: true});
+        } else {
+            res.json({message: "Something went wrong"})
         }
     });
 });
@@ -446,17 +447,10 @@ app.post("/api/submit", async (req, res) => {
             name: req.body.username
         }
     });
-    console.log("user high score", user["high_score"])
-    console.log("req.body.score", req.body.score)
-    if (user["high_score"] < req.body.score) {
-        models.Users.update(
-            { high_score: req.body.score },
-            { where: { name: req.body.username } }
-        ).then(result => {
-            res.send({ newHighScore: true });
-        });
+    if (user !== null) {
+       res.json({success: true})
     } else {
-        res.send({ newHighScore: false });
+        res.json({ success: false });
     }
 });
 
