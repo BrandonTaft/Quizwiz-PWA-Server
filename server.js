@@ -448,7 +448,12 @@ app.post("/api/submit", async (req, res) => {
         }
     });
     if (user !== null) {
-       res.json({success: true})
+        models.Users.update(
+            { high_score: req.body.score },
+            { where: { name: req.body.username } }
+        ).then(result => {
+            res.json({ success: true });
+        });
     } else {
         res.json({ success: false });
     }
