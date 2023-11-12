@@ -442,15 +442,17 @@ app.post("/api/deleteuser", async (req, res) => {
 //**************************Submit Score**************************//
 
 app.post("/api/submit", async (req, res) => {
+    let score = req.body.score;
+    let userName = req.body.username
     let user = await models.Users.findOne({
         where: {
-            name: req.body.username
+            name: userName
         }
     });
-    if (user !== null) {
+    if ( user.high_score < score ) {
         models.Users.update(
-            { high_score: req.body.score },
-            { where: { name: req.body.username } }
+            { high_score: score },
+            { where: { name: userName } }
         ).then(result => {
             res.json({ success: true });
         });
