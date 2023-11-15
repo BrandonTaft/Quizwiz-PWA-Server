@@ -128,7 +128,7 @@ app.get(
         failureRedirect: "https://areyousmarter.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://areyousmarter.vercel.app/profile/?name=" + req.user.displayName);
+        res.redirect("https://areyousmarter.vercel.app/profile/welcome");
     }
 );
 passport.use(
@@ -187,7 +187,7 @@ app.get(
         failureRedirect: "https://areyousmarter.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://areyousmarter.vercel.app/profile/?name=" + req.user.displayName);
+        res.redirect("https://areyousmarter.vercel.app/profile/welcome");
     }
 );
 passport.use(
@@ -247,7 +247,7 @@ app.get(
         failureRedirect: "https://areyousmarter.vercel.app"
     }),
     function (req, res) {
-        res.redirect("https://areyousmarter.vercel.app/profile/?name=" + req.user.username);
+        res.redirect("https://areyousmarter.vercel.app/profile/welcome");
     }
 );
 
