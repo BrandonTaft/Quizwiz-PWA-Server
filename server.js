@@ -464,7 +464,11 @@ app.post("/api/submit", async (req, res) => {
     if ( user.high_score < score ) {
         models.Users.update(
             { high_score: score },
-            { where: { name: 'BB' } }
+            { where: {
+                name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
+                    [Op.like]: userName.toLowerCase()
+                })
+            } }
         ).then(result => {
             res.json({ success: true });
         });
