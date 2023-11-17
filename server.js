@@ -449,6 +449,7 @@ app.post("/api/submit", async (req, res) => {
             name: userName
         }
     });
+    console.log(user)
     if ( user.high_score < score ) {
         models.Users.update(
             { high_score: score },
