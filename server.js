@@ -77,23 +77,23 @@ app.post("/api/register", async (req, res) => {
 //***************************LOGIN PAGE***************************//
 
 app.post("/api/login", async (req, res) => {
-    const username = req.body.username;
+    const userName = req.body.username;
     const password = req.body.password;
     const user = await models.Users.findOne({
         where: {
             name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
-                [Op.like]: username.toLowerCase()
+                [Op.like]: userName.toLowerCase()
             })
         }
     });
     if (user !== null) {
         bcrypt.compare(password, user.password, (error, result) => {
             if (result) {
-                const token = jwt.sign({ name: username }, process.env.JWT_SECRET_KEY);
+                const token = jwt.sign({ name: userName }, process.env.JWT_SECRET_KEY);
                 res.json({
                     success: true,
                     token: token,
-                    name: username,
+                    name: userName,
                     high_score: user.high_score,
                     user_id: user.id
                 });
@@ -102,7 +102,7 @@ app.post("/api/login", async (req, res) => {
             }
         });
     } else {
-        res.json({ message: "That is not your username" });
+        res.json({ message: "That is not your user name" });
     }
 });
 
@@ -139,12 +139,14 @@ passport.use(
             callbackURL: "https://polar-dawn-36653.herokuapp.com/auth/google/callback"
         },
         async function (request, accessToken, refreshToken, profile, done) {
-            const name = profile.displayName;
+            const userName = profile.displayName;
             const password = profile.id;
             const token = profile.accessToken;
             const persistedUser = await models.Users.findOne({
                 where: {
-                    name: name
+                    name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
+                        [Op.like]: userName.toLowerCase()
+                    })
                 }
             });
             if (persistedUser == null) {
@@ -198,12 +200,14 @@ passport.use(
             callbackURL: "https://polar-dawn-36653.herokuapp.com/auth/facebook/callback"
         },
         async function (accessToken, refreshToken, profile, done) {
-            const name = profile.displayName;
+            const userName = profile.displayName;
             const password = profile.id;
             const token = profile.accessToken;
             const persistedUser = await models.Users.findOne({
                 where: {
-                    name: name
+                    name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
+                        [Op.like]: userName.toLowerCase()
+                    })
                 }
             });
             if (persistedUser == null) {
@@ -331,10 +335,12 @@ app.get("/api/highscore", (req, res) => {
 //***************************Users HIGH SCORE***************************//
 
 app.get("/api/userscore", async (req, res) => {
-    let username = req.query["username"];
+    let userName = req.query["username"];
     let score = await models.Users.findOne({
         where: {
-            name: username
+            name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
+                [Op.like]: userName.toLowerCase()
+            })
         }
     });
     if(score !== null) {
@@ -426,9 +432,12 @@ app.get("/quiz/:category", (req, res) => {
 
 //localstorage.clear on users end as well
 app.post("/api/deleteuser", async (req, res) => {
+    const userName = req.body.username;
     let removedUser = await models.Users.destroy({
         where: {
-            name: req.body.userName
+            name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
+                [Op.like]: userName.toLowerCase()
+            })
         }
     }).then(removedUser => {
         if(removedUser === 1) {
@@ -446,7 +455,9 @@ app.post("/api/submit", async (req, res) => {
     let userName = req.body.username
     let user = await models.Users.findOne({
         where: {
-            name: userName
+            name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
+                [Op.like]: userName.toLowerCase()
+            })
         }
     });
     console.log(user)
