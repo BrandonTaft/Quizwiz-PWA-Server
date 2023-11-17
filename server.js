@@ -464,7 +464,7 @@ app.post("/api/submit", async (req, res) => {
     if ( user.high_score < score ) {
         models.Users.update(
             { high_score: score },
-            { where: { name: BB } }
+            { where: { name: 'BB' } }
         ).then(result => {
             res.json({ success: true });
         });
