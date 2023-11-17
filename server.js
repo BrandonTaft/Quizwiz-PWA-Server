@@ -321,7 +321,6 @@ app.get("/api/highscore", (req, res) => {
         order: [[sequelize.fn("max", sequelize.col("high_score")), "DESC"]]
     }).then(high_Score => {
         let len = high_Score.length
-        console.log(high_Score.length)
         for (let i = 0; i < len; i++) {
             leaderboard.push({
                 username: high_Score[i]["name"],
@@ -460,7 +459,7 @@ app.post("/api/submit", async (req, res) => {
             })
         }
     });
-    console.log(user.high_score, score)
+
     if ( user.high_score < score ) {
         models.Users.update(
             { high_score: score },
