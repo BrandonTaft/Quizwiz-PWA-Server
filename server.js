@@ -432,6 +432,7 @@ app.get("/quiz/:category", (req, res) => {
 //localstorage.clear on users end as well
 app.post("/api/deleteuser", async (req, res) => {
     const userName = req.body.username;
+    if(userName !== undefined) {
     let removedUser = await models.Users.destroy({
         where: {
             name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
@@ -445,6 +446,9 @@ app.post("/api/deleteuser", async (req, res) => {
             res.json({message: "Something went wrong"})
         }
     });
+} else {
+    res.json({message: "Something went wrong"})
+}
 });
 
 //**************************Submit Score**************************//
