@@ -342,7 +342,7 @@ app.get("/api/userscore", async (req, res) => {
             })
         }
     });
-    if(score !== null) {
+    if (score !== null) {
         res.json({ score: score.high_score });
     } else {
         res.json({ score: 0 });
@@ -352,36 +352,36 @@ app.get("/api/userscore", async (req, res) => {
 //***************************Get questions***************************//
 const erinQuestions = [
     {
-      category: 'General Knowledge',
-      type: 'multiple',
-      difficulty: 'easy',
-      question: 'Which of the following is not a valid type of time off request?',
-      correct_answer: 'Personal Time Off',
-      incorrect_answers: [ 'Alternate Holiday', 'Paid Time Off', 'Volunteer' ]
+        category: 'General Knowledge',
+        type: 'multiple',
+        difficulty: 'easy',
+        question: 'Which of the following is not a valid type of time off request?',
+        correct_answer: 'Personal Time Off',
+        incorrect_answers: ['Alternate Holiday', 'Paid Time Off', 'Volunteer']
     },
     {
-      category: 'General Knowledge',
-      type: 'multiple',
-      difficulty: 'easy',
-      question: 'What is the name of the new benefit tool?',
-      correct_answer: 'Alex',
-      incorrect_answers: [ 'Eric', 'MyHR', 'Benefit Tracker' ]
+        category: 'General Knowledge',
+        type: 'multiple',
+        difficulty: 'easy',
+        question: 'What is the name of the new benefit tool?',
+        correct_answer: 'Alex',
+        incorrect_answers: ['Eric', 'MyHR', 'Benefit Tracker']
     },
     {
-      category: 'General Knowledge',
-      type: 'multiple',
-      difficulty: 'easy',
-      question: 'What does the ERIN acronym stand for?',
-      correct_answer: 'Employee Resource Information Network',
-      incorrect_answers: [ 'Easy & Reliable Information Network', 'Employee Really Is New', 'Earning Recognition Is Neat' ]
+        category: 'General Knowledge',
+        type: 'multiple',
+        difficulty: 'easy',
+        question: 'What does the ERIN acronym stand for?',
+        correct_answer: 'Employee Resource Information Network',
+        incorrect_answers: ['Easy & Reliable Information Network', 'Employee Really Is New', 'Earning Recognition Is Neat']
     },
     {
-      category: 'General Knowledge',
-      type: 'multiple',
-      difficulty: 'easy',
-      question: 'What is the Assurant cares portal?',
-      correct_answer: 'A one stop shop for all communtiy engagement activities',
-      incorrect_answers: [ 'Social Media Site', 'Nothing, I made it up', 'Employee Health and Wellness Program' ]
+        category: 'General Knowledge',
+        type: 'multiple',
+        difficulty: 'easy',
+        question: 'What is the Assurant cares portal?',
+        correct_answer: 'A one stop shop for all communtiy engagement activities',
+        incorrect_answers: ['Social Media Site', 'Nothing, I made it up', 'Employee Health and Wellness Program']
     },
     {
         category: 'General Knowledge',
@@ -389,21 +389,21 @@ const erinQuestions = [
         difficulty: 'easy',
         question: 'What information can I NOT change in MyHR?',
         correct_answer: 'Pay Rate',
-        incorrect_answers: [ 'Contact Information', 'Benefits', 'Dependents' ]
-      },
-      {
+        incorrect_answers: ['Contact Information', 'Benefits', 'Dependents']
+    },
+    {
         category: 'General Knowledge',
         type: 'multiple',
         difficulty: 'easy',
         question: 'Alternate holidays CANNOT be rolled over to the next year?',
         correct_answer: 'True',
-        incorrect_answers: [ 'False', 'Sometimes', 'Maybe' ]
-      }
+        incorrect_answers: ['False', 'Sometimes', 'Maybe']
+    }
 ]
 app.get("/quiz/:category", (req, res) => {
     let category = req.params["category"];
     if (category === 'ERIN') { res.json(erinQuestions) }
-    
+
     // let category = req.params["category"];
     // if (category == 100) {
     //     axios
@@ -429,26 +429,29 @@ app.get("/quiz/:category", (req, res) => {
 });
 //**************************Delete user**************************//
 
-//localstorage.clear on users end as well
 app.post("/api/deleteuser", async (req, res) => {
     const userName = req.body.username;
-    if(userName !== undefined) {
-    let removedUser = await models.Users.destroy({
-        where: {
-            name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
-                [Op.like]: userName.toLowerCase()
-            })
-        }
-    }).then(removedUser => {
-        if(removedUser === 1) {
-        res.json({success: true});
+    if (userName !== undefined) {
+        if (userName.toLowerCase() === 'guest') {
+            res.json({ message: "This profile can't be deleted" })
         } else {
-            res.json({message: "Something went wrong"})
+            let removedUser = await models.Users.destroy({
+                where: {
+                    name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
+                        [Op.like]: userName.toLowerCase()
+                    })
+                }
+            }).then(removedUser => {
+                if (removedUser === 1) {
+                    res.json({ success: true });
+                } else {
+                    res.json({ message: "Something went wrong" })
+                }
+            });
         }
-    });
-} else {
-    res.json({message: "Something went wrong"})
-}
+    } else {
+        res.json({ message: "Something went wrong" })
+    }
 });
 
 //**************************Submit Score**************************//
@@ -464,14 +467,16 @@ app.post("/api/submit", async (req, res) => {
         }
     });
 
-    if ( user.high_score < score ) {
+    if (user.high_score < score) {
         models.Users.update(
             { high_score: score },
-            { where: {
-                name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
-                    [Op.like]: userName.toLowerCase()
-                })
-            } }
+            {
+                where: {
+                    name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), {
+                        [Op.like]: userName.toLowerCase()
+                    })
+                }
+            }
         ).then(result => {
             res.json({ success: true });
         });
