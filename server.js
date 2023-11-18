@@ -155,7 +155,7 @@ passport.use(
                         console.log("Something Went Wrong!")
                     } else {
                         const user = models.Users.build({
-                            name: name,
+                            name: userName,
                             password: hash,
                             spare_one: token,
                             high_score: "0"
@@ -216,7 +216,7 @@ passport.use(
                         console.log("Something Went Wrong!!!");
                     } else {
                         const user = models.Users.build({
-                            name: name,
+                            name: userName,
                             password: hash,
                             spare_one: token,
                             high_score: "0"
